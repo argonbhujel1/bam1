@@ -1,0 +1,28 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Job Positions{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1>Job Positions</h1>
+  <a href="{{ url_for('admin_job_new') }}" class="btn-admin">+ Add Position</a>
+</div>
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Type</th><th>Published</th><th>Closed</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for j in items %}
+    <tr>
+      <td>{{ j.title }}</td>
+      <td>{% if j.is_internship %}Internship{% elif j.is_freelance %}Freelance{% else %}{{ j.employment_type or 'Job' }}{% endif %}</td>
+      <td>{{ 'Yes' if j.is_published else 'No' }}</td>
+      <td>{{ 'Yes' if j.is_closed else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin_job_edit', jid=j.id) }}" style="color:#38bdf8;margin-right:0.75rem;">Edit</a>
+        <form method="post" action="{{ url_for('admin_job_delete', jid=j.id) }}" style="display:inline;" onsubmit="return confirm('Delete?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" style="color:#ff4d6d;background:none;border:none;cursor:pointer;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}<tr><td colspan="5" style="color:#94a3b8;">No positions</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

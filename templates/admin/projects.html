@@ -1,0 +1,31 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Projects{% endblock %}
+{% block content %}
+<p class="hint" style="margin-bottom:1rem;">Featured = ON भएका मात्र homepage मा देखिन्छन्।</p>
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Projects</h1>
+  <a href="{{ url_for('admin_project_new') }}" style="padding:0.6rem 1.2rem;background:#f5c542;color:#0c1929;border-radius:8px;font-weight:600;font-size:0.9rem;">+ New Project</a>
+</div>
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Category</th><th>Status</th><th>Featured</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for p in projects %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.category.name if p.category else '—' }}</td>
+      <td>{% if p.is_published %}<span class="badge badge-published">Published</span>{% else %}<span class="badge badge-draft">Draft</span>{% endif %}</td>
+      <td>{{ 'Yes' if p.is_featured else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin_project_edit', pid=p.id) }}" style="color:#38bdf8;margin-right:0.75rem;">Edit</a>
+        <form method="post" action="{{ url_for('admin_project_delete', pid=p.id) }}" style="display:inline;" onsubmit="return confirm('Delete?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" style="color:#ff4d6d;background:none;border:none;cursor:pointer;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" style="color:#94a3b8;">No projects yet</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

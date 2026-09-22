@@ -1,0 +1,33 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if member else 'New' }} Team Member{% endblock %}
+{% block content %}
+<div class="admin-topbar"><h1>{{ 'Edit' if member else 'New' }} Team Member</h1></div>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Name *</label>
+  <input type="text" name="name" value="{{ member.name if member else '' }}" required>
+  <label>Position</label>
+  <input type="text" name="position" value="{{ member.position if member else '' }}">
+  <label>Bio</label>
+  <textarea name="bio" rows="4">{{ member.bio if member else '' }}</textarea>
+
+  <label>Photo</label>
+  <div class="upload-row">
+    <img src="{{ member.photo if member and member.photo else '' }}" class="upload-preview" id="photo-preview" {% if not member or not member.photo %}style="display:none"{% endif %}>
+    <div style="flex:1;">
+      <input type="text" name="photo" id="photo-url" value="{{ member.photo if member else '' }}" placeholder="Photo URL">
+      <input type="file" accept="image/*" class="js-upload" data-target="photo-url" data-preview="photo-preview" data-folder="bam-studio/team">
+      <p class="hint">Upload photo or paste URL</p>
+    </div>
+  </div>
+
+  <label>Email</label>
+  <input type="email" name="email" value="{{ member.email if member else '' }}">
+  <label>Skills (comma separated)</label>
+  <input type="text" name="skills" value="{{ member.skills|join(', ') if member and member.skills else '' }}">
+  <label>Order</label>
+  <input type="number" name="order" value="{{ member.order if member else 0 }}">
+  <label><input type="checkbox" name="is_visible" value="1" {% if not member or member.is_visible %}checked{% endif %}> Visible</label>
+  <button type="submit" class="btn-admin">Save</button>
+</form>
+{% endblock %}

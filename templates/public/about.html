@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+{% block title %}About — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">ABOUT</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">BAM Studio</h1>
+      <p class="text-muted" style="max-width:600px;margin:0 auto;">{{ site.get('about_intro', 'A digital development and creative technology studio.') }}</p>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:2rem;gap:2rem;">
+      <div class="card" data-reveal>
+        <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">What we do</h2>
+        <p class="text-muted">{{ site.get('about_what_we_do', '') }}</p>
+      </div>
+      <div class="card" data-reveal>
+        <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">Our approach</h2>
+        <p class="text-muted">{{ site.get('about_approach', '') }}</p>
+      </div>
+      <div class="card" data-reveal>
+        <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">Mission</h2>
+        <p class="text-muted">{{ site.get('mission', '') }}</p>
+      </div>
+      <div class="card" data-reveal>
+        <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">Vision</h2>
+        <p class="text-muted">{{ site.get('vision', '') }}</p>
+      </div>
+    </div>
+
+    {% if stats %}
+    <div class="grid grid-4" style="margin-top:3rem;" data-reveal>
+      {% for st in stats %}
+      <div class="card" style="text-align:center;">
+        <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--color-primary);">{{ st.value }}</div>
+        <div class="text-muted" style="margin-top:0.35rem;">{{ st.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if values %}
+    <h2 class="h2" style="text-align:center;margin:3.5rem 0 1.5rem;" data-reveal>Our Values</h2>
+    <div class="grid grid-3">
+      {% for v in values %}
+      <div class="card" data-reveal>
+        <h3 class="h3">{{ v.title }}</h3>
+        <p class="text-muted" style="margin-top:0.5rem;font-size:0.95rem;">{{ v.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if partnerships %}
+    <div class="trust-banner" style="margin:3rem 0;border-radius:var(--radius-lg);" data-reveal>
+      <div class="container">
+        {% for p in partnerships if p.is_featured %}
+        <span class="eyebrow">{{ p.badge_text or 'Official Partnership' }}</span>
+        <p class="text-muted" style="margin-top:0.75rem;">{{ p.description }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if team %}
+    <h2 id="team" class="h2" style="text-align:center;margin:3rem 0 1.5rem;" data-reveal>Team</h2>
+    <div class="grid grid-3">
+      {% for m in team %}
+      <a href="{{ url_for('team_detail', mid=m.id) }}" class="card" data-reveal style="text-align:center;">
+        {% if m.photo %}
+        <img src="{{ m.photo }}" alt="{{ m.name }}" style="width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 auto 1rem;border:2px solid var(--color-border);">
+        {% else %}
+        <div style="width:96px;height:96px;border-radius:50%;background:rgba(245,197,66,0.15);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;color:var(--color-primary);">{{ m.name[0] }}</div>
+        {% endif %}
+        <h3 class="h3">{{ m.name }}</h3>
+        <p class="text-primary" style="font-size:0.85rem;margin:0.35rem 0;">{{ m.position }}</p>
+        {% if m.bio %}<p class="text-muted" style="font-size:0.9rem;">{{ m.bio[:120] }}{% if m.bio|length > 120 %}…{% endif %}</p>{% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

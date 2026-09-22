@@ -1,0 +1,52 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Dashboard</h1>
+  <a href="{{ url_for('index') }}" target="_blank" style="color:#f5c542;font-size:0.9rem;">View site →</a>
+</div>
+<div class="stat-cards">
+  <div class="stat-card"><div class="num">{{ stats.projects }}</div><div class="label">Projects</div></div>
+  <div class="stat-card"><div class="num">{{ stats.published_projects }}</div><div class="label">Published</div></div>
+  <div class="stat-card"><div class="num">{{ stats.new_leads }}</div><div class="label">New Leads</div></div>
+  <div class="stat-card"><div class="num">{{ stats.services }}</div><div class="label">Services</div></div>
+  <div class="stat-card"><div class="num">{{ stats.blog }}</div><div class="label">Blog Posts</div></div>
+  <div class="stat-card"><div class="num">{{ stats.team }}</div><div class="label">Team</div></div>
+  <div class="stat-card"><div class="num">{{ stats.media }}</div><div class="label">Media</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+  <div>
+    <h2 style="font-size:1.1rem;margin-bottom:1rem;">Recent Leads</h2>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for l in recent_leads %}
+        <tr>
+          <td><a href="{{ url_for('admin_lead_detail', lid=l.id) }}" style="color:#38bdf8;">{{ l.name }}</a></td>
+          <td><span class="badge badge-new">{{ l.status }}</span></td>
+          <td>{{ l.created_at.strftime('%d %b') if l.created_at else '' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" style="color:#94a3b8;">No leads yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h2 style="font-size:1.1rem;margin-bottom:1rem;">Recent Projects</h2>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for p in recent_projects %}
+        <tr>
+          <td><a href="{{ url_for('admin_project_edit', pid=p.id) }}" style="color:#38bdf8;">{{ p.name }}</a></td>
+          <td>{% if p.is_published %}<span class="badge badge-published">Published</span>{% else %}<span class="badge badge-draft">Draft</span>{% endif %}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2" style="color:#94a3b8;">No projects</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

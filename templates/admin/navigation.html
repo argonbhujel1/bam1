@@ -1,0 +1,37 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Navigation{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">Navigation</h1>
+<table class="admin-table" style="margin-bottom:2rem;">
+  <thead><tr><th>Label</th><th>URL</th><th>CTA</th><th>Order</th><th></th></tr></thead>
+  <tbody>
+    {% for i in items %}
+    <tr>
+      <td>{{ i.label }}</td>
+      <td>{{ i.url }}</td>
+      <td>{{ 'Yes' if i.is_cta else '' }}</td>
+      <td>{{ i.order }}</td>
+      <td>
+        <form method="post" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="id" value="{{ i.id }}">
+          <button type="submit" style="color:#ff4d6d;background:none;border:none;cursor:pointer;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2 style="font-size:1.1rem;margin-bottom:1rem;">Add item</h2>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="action" value="add">
+  <label>Label</label><input type="text" name="label" required>
+  <label>URL</label><input type="text" name="url" required>
+  <label>Order</label><input type="number" name="order" value="0">
+  <label><input type="checkbox" name="is_cta" value="1"> Is CTA button</label>
+  <label><input type="checkbox" name="is_external" value="1"> External link</label>
+  <button type="submit" style="margin-top:1rem;padding:0.75rem 1.5rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;">Add</button>
+</form>
+{% endblock %}

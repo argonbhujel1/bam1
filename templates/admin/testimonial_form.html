@@ -1,0 +1,26 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Testimonial{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">{{ 'Edit' if item else 'New' }} Testimonial</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Client name *</label><input type="text" name="client_name" value="{{ item.client_name if item else '' }}" required>
+  <label>Company</label><input type="text" name="company" value="{{ item.company if item else '' }}">
+  <label>Role / Position</label><input type="text" name="role" value="{{ item.role if item else '' }}">
+  <label>Photo</label>
+  <div class="upload-row">
+    <img src="{{ item.photo if item and item.photo else '' }}" class="upload-preview" id="t-preview" {% if not item or not item.photo %}style="display:none"{% endif %}>
+    <div style="flex:1;">
+      <input type="text" name="photo" id="t-photo-url" value="{{ item.photo if item else '' }}">
+      <input type="file" accept="image/*" class="js-upload" data-target="t-photo-url" data-preview="t-preview" data-folder="bam-studio/testimonials">
+    </div>
+  </div>
+  <label>Testimonial *</label><textarea name="content" rows="4" required>{{ item.content if item else '' }}</textarea>
+  <label>Rating (1–5)</label><input type="number" name="rating" min="1" max="5" value="{{ item.rating if item else 5 }}">
+  <label>Project name</label><input type="text" name="project_name" value="{{ item.project_name if item else '' }}">
+  <label>Date</label><input type="text" name="testimonial_date" value="{{ item.testimonial_date if item else '' }}">
+  <label>Order</label><input type="number" name="order" value="{{ item.order if item else 0 }}">
+  <label><input type="checkbox" name="is_published" value="1" {% if not item or item.is_published %}checked{% endif %}> Published</label>
+  <button type="submit" class="btn-admin">Save</button>
+</form>
+{% endblock %}

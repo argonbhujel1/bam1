@@ -1,0 +1,24 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Media{% endblock %}
+{% block content %}
+<div class="admin-topbar"><h1>Media Library</h1></div>
+<form method="post" enctype="multipart/form-data" class="admin-form" style="margin-bottom:2rem;max-width:480px;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Upload image</label>
+  <input type="file" name="file" accept="image/*" required>
+  <p class="hint">Cloudinary if configured in .env, otherwise saved to static/uploads.</p>
+  <button type="submit" class="btn-admin">Upload</button>
+</form>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;">
+  {% for m in media %}
+  <div style="background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden;border:1px solid rgba(56,189,248,0.15);">
+    <img src="{{ m.url }}" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;">
+    <div style="padding:0.5rem;font-size:0.7rem;word-break:break-all;color:#94a3b8;">
+      <input type="text" readonly value="{{ m.url }}" onclick="this.select()" style="width:100%;font-size:0.7rem;padding:0.35rem;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#38bdf8;">
+    </div>
+  </div>
+  {% else %}
+  <p style="color:#94a3b8;">No media yet. Upload above.</p>
+  {% endfor %}
+</div>
+{% endblock %}

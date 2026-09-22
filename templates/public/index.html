@@ -1,0 +1,268 @@
+{% extends 'layouts/base.html' %}
+{% block title %}{{ site.get('site_name', 'BAM Studio') }} — Digital Development Studio{% endblock %}
+
+{% block content %}
+<div class="code-bg" aria-hidden="true"><canvas id="code-canvas"></canvas></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div data-reveal>
+      <span class="eyebrow">{{ site.get('hero_eyebrow', 'BAM STUDIO') }}</span>
+      <h1 style="margin: 1.25rem 0 1rem;">{{ site.get('hero_heading', 'We Build Digital Experiences That Move Businesses Forward.') }}</h1>
+      <p class="text-muted" style="font-size:1.1rem;max-width:520px;margin-bottom:2rem;">
+        {{ site.get('hero_description', 'Modern websites, custom software and digital experiences built around real business needs.') }}
+      </p>
+      <div class="btn-group">
+        <a href="{{ site.get('hero_primary_url', url_for('quote_page')) }}" class="btn btn-primary">{{ site.get('hero_primary_text', 'Start a Project') }}</a>
+        <a href="{{ site.get('hero_secondary_url', url_for('work_page')) }}" class="btn btn-secondary">{{ site.get('hero_secondary_text', 'View Our Work') }}</a>
+      </div>
+    </div>
+    <div class="hero-visual hover-lift" data-reveal="right">
+      <div class="hero-card {% if site.get('hero_image') %}has-photo{% endif %}">
+        <canvas id="hero-code-canvas" class="hero-code-canvas" aria-hidden="true"></canvas>
+        {% if site.get('hero_image') %}
+          <img src="{{ site.get('hero_image') }}" alt="{{ site.get('site_name', 'BAM Studio') }}" class="hero-card-img">
+        {% else %}
+          <div class="hero-placeholder-inner">
+            <div class="hero-logo-text">BAM</div>
+            <div class="hero-sub">Digital Studio</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if partnerships %}
+{% for p in partnerships if p.is_featured %}
+{% if p.partner_url %}
+<a href="{{ p.partner_url }}" target="_blank" rel="noopener" class="trust-banner trust-banner-link" data-reveal>
+{% else %}
+<section class="trust-banner" data-reveal>
+{% endif %}
+  <div class="container trust-banner-inner">
+    <div class="trust-banner-text">
+      <span class="eyebrow">{{ p.badge_text or 'OFFICIAL PARTNERSHIP' }}</span>
+      <h2 class="h2" style="margin:1rem 0 0.5rem;">Official Web &amp; Tech Partner of {{ p.partner_name }}</h2>
+      {% if p.description %}<p class="text-muted">{{ p.description }}</p>{% endif %}
+      {% if p.partner_url %}<span class="trust-cta text-primary">Visit partner →</span>{% endif %}
+    </div>
+    <div class="trust-banner-logo">
+      {% if p.partner_logo %}
+        <img src="{{ p.partner_logo }}" alt="{{ p.partner_name }}" class="partner-logo-img">
+      {% else %}
+        <div class="partner-logo-fallback">{{ p.partner_name[:1] }}</div>
+      {% endif %}
+    </div>
+  </div>
+{% if p.partner_url %}
+</a>
+{% else %}
+</section>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if stats %}
+<section class="section" style="padding-block:3rem;">
+  <div class="container">
+    <div class="grid grid-4">
+      {% for st in stats %}
+      <div class="card hover-lift text-center" data-reveal>
+        <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--color-primary);">{{ st.value }}</div>
+        <div class="text-muted" style="margin-top:0.35rem;">{{ st.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- SELECTED WORK — featured only -->
+<section class="section" id="work">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">PORTFOLIO</span>
+      <h2 class="h2">Selected Work</h2>
+      <p class="text-muted">Featured projects from BAM Studio.</p>
+    </div>
+    <div class="grid grid-3">
+      {% for project in projects %}
+      <a href="{{ url_for('project_detail', slug=project.slug) }}" class="card project-card hover-lift" data-reveal>
+        <div class="thumb">
+          {% if project.cover_image %}
+            <img src="{{ project.cover_image }}" alt="{{ project.name }}" loading="lazy">
+          {% else %}
+            <div class="thumb-fallback">{{ project.name[:2]|upper }}</div>
+          {% endif %}
+        </div>
+        <div class="body">
+          <div class="cat">{{ project.category.name if project.category else 'Project' }}</div>
+          <h3 class="h3">{{ project.name }}</h3>
+          <p class="text-muted" style="font-size:0.9rem;margin-top:0.4rem;">{{ project.short_description[:120] if project.short_description else '' }}{% if project.short_description and project.short_description|length > 120 %}…{% endif %}</p>
+        </div>
+      </a>
+      {% else %}
+      <p class="text-muted">No featured projects yet. Mark projects as Featured in admin.</p>
+      {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;" data-reveal>
+      <a href="{{ url_for('work_page') }}" class="btn btn-primary">View All Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" style="background:var(--color-bg-deep);" id="services">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">WHAT WE DO</span>
+      <h2 class="h2">Services</h2>
+      <p class="text-muted">From websites to custom software and digital systems.</p>
+    </div>
+    <div class="grid grid-3">
+      {% for s in services %}
+      <a href="{{ url_for('service_detail', slug=s.slug) }}" class="card service-card hover-lift" data-reveal>
+        <div class="icon">{{ s.icon or '◆' }}</div>
+        <h3 class="h3">{{ s.title }}</h3>
+        <p class="text-muted" style="margin:0.75rem 0 1.25rem;font-size:0.95rem;">{{ s.description[:140] if s.description else '' }}{% if s.description and s.description|length > 140 %}…{% endif %}</p>
+        <span class="text-primary" style="font-size:0.9rem;font-weight:600;">{{ s.cta_text or 'Learn more' }} →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- WHY BAM — expandable cards -->
+<section class="section" id="why">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">WHY BAM STUDIO</span>
+      <h2 class="h2">Built for real business needs</h2>
+      <p class="text-muted">Click a card to learn more.</p>
+    </div>
+    <div class="grid grid-3">
+      <button type="button" class="card why-card hover-lift" data-reveal data-why="custom">
+        <h3 class="h3">Custom Built</h3>
+        <p class="text-muted why-short">Every project is designed and developed from the ground up around your goals.</p>
+        <div class="why-more">
+          <p class="text-muted">We don’t force templates. Scope, structure and features are shaped by your business process, audience and timeline — so the result fits how you actually work.</p>
+          <ul class="why-list">
+            <li>Requirements-first discovery</li>
+            <li>No one-size-fits-all themes</li>
+            <li>Maintainable structure</li>
+          </ul>
+        </div>
+        <span class="why-toggle text-primary">Read more →</span>
+      </button>
+      <button type="button" class="card why-card hover-lift" data-reveal data-why="stack">
+        <h3 class="h3">Modern Stack</h3>
+        <p class="text-muted why-short">Clean code, performance-focused, and easy to maintain and scale.</p>
+        <div class="why-more">
+          <p class="text-muted">We use proven web technologies with clear architecture so your site stays fast, secure and extendable — without locking you into opaque platforms.</p>
+          <ul class="why-list">
+            <li>Performance-minded builds</li>
+            <li>Clear code & documentation</li>
+            <li>Room to grow features later</li>
+          </ul>
+        </div>
+        <span class="why-toggle text-primary">Read more →</span>
+      </button>
+      <button type="button" class="card why-card hover-lift" data-reveal data-why="partner">
+        <h3 class="h3">Partnership Mindset</h3>
+        <p class="text-muted why-short">We work as a technology partner, not just a one-off vendor.</p>
+        <div class="why-more">
+          <p class="text-muted">Launch is the start. We stay available for support, improvements and new features so your digital product keeps matching the business.</p>
+          <ul class="why-list">
+            <li>Transparent communication</li>
+            <li>Post-launch support options</li>
+            <li>Long-term product thinking</li>
+          </ul>
+        </div>
+        <span class="why-toggle text-primary">Read more →</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% if pricing %}
+<section class="section" style="background:var(--color-bg-deep);" id="pricing">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">PRICING</span>
+      <h2 class="h2">Clear packages. Flexible options.</h2>
+      <p class="text-muted">Starting prices in NPR. Custom quotes available for larger projects.</p>
+    </div>
+    <div class="grid grid-4">
+      {% for plan in pricing %}
+      <div class="card pricing-card hover-lift {% if plan.is_featured %}featured{% endif %}" data-reveal>
+        {% if plan.badge %}<span class="badge">{{ plan.badge }}</span>{% endif %}
+        <h3 class="h3">{{ plan.name }}</h3>
+        <div class="price">{{ plan.currency }} {{ plan.price }}{% if plan.starting_from %}+{% endif %}</div>
+        <p class="text-muted" style="font-size:0.9rem;margin-bottom:1.25rem;">{{ plan.description }}</p>
+        <ul style="text-align:left;margin-bottom:1.5rem;font-size:0.9rem;">
+          {% for f in plan.features or [] %}
+          <li style="padding:0.35rem 0;border-bottom:1px solid color-mix(in srgb, var(--color-border) 80%, transparent);">✓ {{ f }}</li>
+          {% endfor %}
+        </ul>
+        <a href="{{ plan.button_url or url_for('quote_page') }}" class="btn {% if plan.is_featured %}btn-solid{% else %}btn-primary{% endif %}" style="width:100%;">{{ plan.button_text or 'Get Started' }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if testimonials %}
+<section class="section">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">TESTIMONIALS</span>
+      <h2 class="h2">What clients say</h2>
+    </div>
+    <div class="grid grid-2">
+      {% for t in testimonials %}
+      <div class="card hover-lift" data-reveal>
+        <p style="font-size:1.05rem;margin-bottom:1.25rem;">“{{ t.content }}”</p>
+        <div class="text-muted" style="font-size:0.9rem;">
+          <strong style="color:var(--color-text);">{{ t.client_name }}</strong>
+          {% if t.role or t.company %} — {{ t.role }}{% if t.company %}, {{ t.company }}{% endif %}{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section cta-section">
+  <div class="container" data-reveal>
+    <h2 class="h2">Ready to build something that works?</h2>
+    <p class="text-muted" style="max-width:480px;margin:1rem auto 2rem;">Tell us about your project. We’ll reply with a clear next step.</p>
+    <a href="{{ url_for('quote_page') }}" class="btn btn-solid">Start a Project</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/code-bg.js') }}"></script>
+<script src="{{ url_for('static', filename='js/hero-code.js') }}"></script>
+<script>
+document.querySelectorAll('.why-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const open = card.classList.contains('open');
+    document.querySelectorAll('.why-card.open').forEach(c => {
+      c.classList.remove('open');
+      const t = c.querySelector('.why-toggle');
+      if (t) t.textContent = 'Read more →';
+    });
+    if (!open) {
+      card.classList.add('open');
+      const t = card.querySelector('.why-toggle');
+      if (t) t.textContent = 'Show less ↑';
+    }
+  });
+});
+</script>
+{% endblock %}

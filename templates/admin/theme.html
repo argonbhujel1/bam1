@@ -1,0 +1,38 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Theme{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">Theme Editor</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <h2 style="font-size:1.1rem;margin:1.5rem 0 1rem;color:#f5c542;">Colors</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+    {% for key in ['color_primary','color_secondary','color_accent','color_bg','color_bg_deep','color_text','color_muted','color_border'] %}
+    <div>
+      <label>{{ key.replace('color_','').replace('_',' ')|title }}</label>
+      <input type="color" name="{{ key }}" value="{{ theme.get(key, '#f5c542') if theme.get(key, '').startswith('#') else '#f5c542' }}">
+      <input type="text" name="{{ key }}_text" value="{{ theme.get(key, '') }}" style="margin-top:0.35rem;" onchange="this.form.{{ key }}.value=this.value">
+    </div>
+    {% endfor %}
+  </div>
+  <h2 style="font-size:1.1rem;margin:1.5rem 0 1rem;color:#f5c542;">Typography</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <div><label>Display Font</label><input type="text" name="font_display" value="{{ theme.get('font_display', '') }}"></div>
+    <div><label>Body Font</label><input type="text" name="font_body" value="{{ theme.get('font_body', '') }}"></div>
+    <div><label>H1 Size</label><input type="text" name="h1_size" value="{{ theme.get('h1_size', '') }}"></div>
+    <div><label>Letter Spacing Display</label><input type="text" name="letter_spacing_display" value="{{ theme.get('letter_spacing_display', '') }}"></div>
+  </div>
+  <h2 style="font-size:1.1rem;margin:1.5rem 0 1rem;color:#f5c542;">Spacing & Radius</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+    <div><label>Container Width</label><input type="text" name="container_width" value="{{ theme.get('container_width', '') }}"></div>
+    <div><label>Section Space Desktop</label><input type="text" name="section_space_desktop" value="{{ theme.get('section_space_desktop', '') }}"></div>
+    <div><label>Radius Large</label><input type="text" name="radius_lg" value="{{ theme.get('radius_lg', '') }}"></div>
+  </div>
+  <h2 style="font-size:1.1rem;margin:1.5rem 0 1rem;color:#f5c542;">Animations</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+    <div><label>Animations Enabled</label><select name="animations_enabled"><option value="true" {% if theme.get('animations_enabled')=='true' %}selected{% endif %}>On</option><option value="false" {% if theme.get('animations_enabled')=='false' %}selected{% endif %}>Off</option></select></div>
+    <div><label>Animation Speed</label><input type="text" name="animation_speed" value="{{ theme.get('animation_speed', '0.6s') }}"></div>
+    <div><label>Intensity</label><select name="animation_intensity"><option value="subtle">Subtle</option><option value="normal" selected>Normal</option><option value="strong">Strong</option></select></div>
+  </div>
+  <button type="submit" class="btn" style="margin-top:1.5rem;padding:0.75rem 1.5rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Save Theme</button>
+</form>
+{% endblock %}

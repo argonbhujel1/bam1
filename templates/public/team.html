@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Our Team — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">TEAM</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">Our Team</h1>
+      <p class="text-muted">The people behind BAM Studio.</p>
+    </div>
+    <div class="grid grid-3">
+      {% for m in team %}
+      <a href="{{ url_for('team_detail', mid=m.id) }}" class="card" data-reveal style="text-align:center;">
+        {% if m.photo %}
+        <img src="{{ m.photo }}" alt="{{ m.name }}" style="width:110px;height:110px;border-radius:50%;object-fit:cover;margin:0 auto 1rem;border:2px solid var(--color-border);">
+        {% else %}
+        <div style="width:110px;height:110px;border-radius:50%;background:rgba(245,197,66,0.15);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--color-primary);">{{ m.name[0] }}</div>
+        {% endif %}
+        <h3 class="h3">{{ m.name }}</h3>
+        <p class="text-primary" style="font-size:0.85rem;margin:0.35rem 0;">{{ m.position }}</p>
+        {% if m.bio %}<p class="text-muted" style="font-size:0.9rem;">{{ m.bio[:140] }}{% if m.bio|length > 140 %}…{% endif %}</p>{% endif %}
+        <span class="text-primary" style="font-size:0.85rem;font-weight:600;display:inline-block;margin-top:0.75rem;">View profile →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

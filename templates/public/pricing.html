@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Pricing — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">PRICING</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">Packages</h1>
+      <p class="text-muted">Transparent starting prices. Custom quotes for larger scope.</p>
+    </div>
+    <div class="grid grid-4">
+      {% for plan in plans %}
+      <div class="card pricing-card {% if plan.is_featured %}featured{% endif %}" data-reveal>
+        {% if plan.badge %}<span class="badge">{{ plan.badge }}</span>{% endif %}
+        <h3 class="h3">{{ plan.name }}</h3>
+        <div class="price">{{ plan.currency }} {{ plan.price }}{% if plan.starting_from %}+{% endif %}</div>
+        <p class="text-muted" style="font-size:0.9rem;margin-bottom:1.25rem;">{{ plan.description }}</p>
+        <ul style="text-align:left;margin-bottom:1.5rem;font-size:0.9rem;">
+          {% for f in plan.features or [] %}
+          <li style="padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">✓ {{ f }}</li>
+          {% endfor %}
+        </ul>
+        <a href="{{ plan.button_url or url_for('contact_page') }}" class="btn {% if plan.is_featured %}btn-solid{% else %}btn-primary{% endif %}" style="width:100%;">{{ plan.button_text or 'Get Started' }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

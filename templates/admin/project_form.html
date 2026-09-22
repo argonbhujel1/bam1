@@ -1,0 +1,61 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if project else 'New' }} Project{% endblock %}
+{% block content %}
+<div class="admin-topbar"><h1>{{ 'Edit' if project else 'New' }} Project</h1></div>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Name *</label>
+  <input type="text" name="name" value="{{ project.name if project else '' }}" required>
+  <label>Slug</label>
+  <input type="text" name="slug" value="{{ project.slug if project else '' }}">
+  <label>Category</label>
+  <select name="category_id">
+    <option value="">—</option>
+    {% for c in categories %}
+    <option value="{{ c.id }}" {% if project and project.category_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+    {% endfor %}
+  </select>
+  <label>Client</label>
+  <input type="text" name="client" value="{{ project.client if project else '' }}">
+  <label>Industry</label>
+  <input type="text" name="industry" value="{{ project.industry if project else '' }}">
+  <label>Year</label>
+  <input type="text" name="year" value="{{ project.year if project else '' }}">
+  <label>Short description</label>
+  <textarea name="short_description" rows="2">{{ project.short_description if project else '' }}</textarea>
+  <label>Full description</label>
+  <textarea name="full_description" rows="3">{{ project.full_description if project else '' }}</textarea>
+  <label>Challenge</label>
+  <textarea name="challenge" rows="3">{{ project.challenge if project else '' }}</textarea>
+  <label>Solution</label>
+  <textarea name="solution" rows="3">{{ project.solution if project else '' }}</textarea>
+  <label>Result</label>
+  <textarea name="results" rows="2">{{ project.results if project else '' }}</textarea>
+  <label>Features (one per line)</label>
+  <textarea name="features" rows="4">{% if project and project.features %}{{ project.features|join('\n') }}{% endif %}</textarea>
+  <label>Services used (comma separated)</label>
+  <input type="text" name="services_used" value="{{ project.services_used|join(', ') if project and project.services_used else '' }}">
+  <label>Technologies (comma separated)</label>
+  <input type="text" name="technologies" value="{{ project.technologies|join(', ') if project and project.technologies else '' }}">
+
+  <label>Cover image</label>
+  <div class="upload-row">
+    <img src="{{ project.cover_image if project and project.cover_image else '' }}" class="upload-preview" id="cover-preview" {% if not project or not project.cover_image %}style="display:none"{% endif %}>
+    <div style="flex:1;">
+      <input type="text" name="cover_image" id="cover-url" value="{{ project.cover_image if project else '' }}" placeholder="Image URL">
+      <input type="file" accept="image/*" class="js-upload" data-target="cover-url" data-preview="cover-preview" data-folder="bam-studio/projects">
+      <p class="hint">Upload photo or paste URL</p>
+    </div>
+  </div>
+
+  <label>Live URL</label>
+  <input type="url" name="live_url" value="{{ project.live_url if project else '' }}">
+  <label>GitHub URL</label>
+  <input type="url" name="github_url" value="{{ project.github_url if project else '' }}">
+  <label>Order</label>
+  <input type="number" name="order" value="{{ project.order if project else 0 }}">
+  <label><input type="checkbox" name="is_featured" value="1" {% if project and project.is_featured %}checked{% endif %}> Featured</label>
+  <label><input type="checkbox" name="is_published" value="1" {% if not project or project.is_published %}checked{% endif %}> Published</label>
+  <button type="submit" class="btn-admin">Save project</button>
+</form>
+{% endblock %}

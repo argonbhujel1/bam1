@@ -1,0 +1,31 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Testimonials — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">TESTIMONIALS</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">Client feedback</h1>
+      <p class="text-muted">Real clients only — this section stays empty until genuine reviews are added in admin.</p>
+    </div>
+    {% if testimonials %}
+    <div class="grid grid-2">
+      {% for t in testimonials %}
+      <div class="card" data-reveal>
+        <div style="color:var(--color-primary);margin-bottom:0.75rem;">{% for i in range(t.rating or 5) %}★{% endfor %}</div>
+        <p style="font-size:1.05rem;margin-bottom:1.25rem;">“{{ t.content }}”</p>
+        <div class="text-muted" style="font-size:0.9rem;">
+          <strong style="color:var(--color-text);">{{ t.client_name }}</strong>
+          {% if t.role or t.company %} — {{ t.role }}{% if t.company %}, {{ t.company }}{% endif %}{% endif %}
+          {% if t.project_name %}<br><span style="font-size:0.8rem;">Project: {{ t.project_name }}</span>{% endif %}
+          {% if t.testimonial_date %}<br><span style="font-size:0.8rem;">{{ t.testimonial_date }}</span>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted" style="text-align:center;padding:2rem 0;">No published testimonials yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Pricing{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Pricing</h1>
+  <a href="{{ url_for('admin_pricing_new') }}" style="padding:0.6rem 1.2rem;background:#f5c542;color:#0c1929;border-radius:8px;font-weight:600;">+ New Plan</a>
+</div>
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Price</th><th>Featured</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for p in plans %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.currency }} {{ p.price }}</td>
+      <td>{{ 'Yes' if p.is_featured else '' }}</td>
+      <td><a href="{{ url_for('admin_pricing_edit', pid=p.id) }}" style="color:#38bdf8;">Edit</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

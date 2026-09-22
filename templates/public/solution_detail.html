@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+{% block title %}{{ solution.title }} — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + 4rem);">
+  <div class="container" style="max-width:860px;">
+    <div data-reveal>
+      <span class="eyebrow">{{ solution.industry or 'SOLUTION' }}</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,2.75rem);margin:1rem 0;">{{ solution.icon or '' }} {{ solution.title }}</h1>
+      <p class="text-muted" style="font-size:1.1rem;">{{ solution.short_description }}</p>
+    </div>
+    <div class="grid grid-2" style="margin-top:2.5rem;gap:2rem;">
+      <div class="card" data-reveal>
+        <h2 class="h2" style="font-size:1.15rem;margin-bottom:0.75rem;color:var(--color-error);">Problem</h2>
+        <p class="text-muted">{{ solution.problem }}</p>
+      </div>
+      <div class="card" data-reveal>
+        <h2 class="h2" style="font-size:1.15rem;margin-bottom:0.75rem;color:var(--color-accent);">Solution</h2>
+        <p class="text-muted">{{ solution.solution_text }}</p>
+      </div>
+    </div>
+    {% if solution.features %}
+    <div style="margin-top:2rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.2rem;margin-bottom:1rem;">Features</h2>
+      <ul>{% for f in solution.features %}<li style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">✓ {{ f }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if solution.technologies %}
+    <div style="margin-top:1.5rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.2rem;margin-bottom:1rem;">Technology</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+        {% for t in solution.technologies %}
+        <span style="padding:0.35rem 0.85rem;border:1px solid var(--color-border);border-radius:999px;font-size:0.85rem;color:var(--color-primary);">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    <div style="margin-top:2.5rem;" data-reveal>
+      <a href="{{ solution.cta_url or url_for('quote_page') }}" class="btn btn-solid">{{ solution.cta_text or 'Discuss this solution' }}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

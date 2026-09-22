@@ -1,0 +1,48 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Apply — {{ job.title }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container" style="max-width:640px;">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">APPLY</span>
+      <h1 class="h1" style="font-size:clamp(1.75rem,4vw,2.25rem);">{{ job.title }}</h1>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div style="padding:0.85rem 1.25rem;border-radius:8px;margin-bottom:1rem;{% if cat=='success' %}background:rgba(5,150,105,0.12);color:#059669;{% else %}background:rgba(220,38,38,0.1);color:#dc2626;{% endif %}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data" class="card" data-reveal style="padding:2rem;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="text-muted" style="font-size:0.85rem;">Full Name *</label>
+      <input type="text" name="full_name" required style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <label class="text-muted" style="font-size:0.85rem;">Email *</label>
+      <input type="email" name="email" required style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <label class="text-muted" style="font-size:0.85rem;">Phone</label>
+      <input type="text" name="phone" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <label class="text-muted" style="font-size:0.85rem;">Experience *</label>
+      <select name="experience" required style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+        <option value="">Select…</option>
+        <option>No Experience</option>
+        <option>0–1 Year</option>
+        <option>1–2 Years</option>
+        <option>2–5 Years</option>
+        <option>5+ Years</option>
+      </select>
+      <label class="text-muted" style="font-size:0.85rem;">Portfolio / Website</label>
+      <input type="url" name="portfolio" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <label class="text-muted" style="font-size:0.85rem;">GitHub</label>
+      <input type="url" name="github" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <label class="text-muted" style="font-size:0.85rem;">LinkedIn</label>
+      <input type="url" name="linkedin" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <label class="text-muted" style="font-size:0.85rem;">Cover Letter</label>
+      <textarea name="cover_letter" rows="4" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;"></textarea>
+      <label class="text-muted" style="font-size:0.85rem;">Resume / CV (PDF, DOC, DOCX)</label>
+      <input type="file" name="resume" accept=".pdf,.doc,.docx,application/pdf" style="width:100%;margin-bottom:0.5rem;">
+      <p class="text-muted" style="font-size:0.8rem;margin-bottom:1.25rem;">Or paste URL:</p>
+      <input type="url" name="resume_url" placeholder="https://..." style="width:100%;padding:0.75rem;margin-bottom:1.25rem;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:inherit;">
+      <button type="submit" class="btn btn-solid">Submit Application</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

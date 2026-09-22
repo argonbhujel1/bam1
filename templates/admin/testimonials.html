@@ -1,0 +1,22 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Testimonials{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Testimonials</h1>
+  <a href="{{ url_for('admin_testimonial_new') }}" style="padding:0.6rem 1.2rem;background:#f5c542;color:#0c1929;border-radius:8px;font-weight:600;">+ Add</a>
+</div>
+<p style="color:#94a3b8;margin-bottom:1rem;font-size:0.9rem;">Only real client feedback. Empty = hidden on public site.</p>
+<table class="admin-table">
+  <thead><tr><th>Client</th><th>Company</th><th>Published</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for t in items %}
+    <tr>
+      <td>{{ t.client_name }}</td>
+      <td>{{ t.company or '—' }}</td>
+      <td>{{ 'Yes' if t.is_published else 'No' }}</td>
+      <td><a href="{{ url_for('admin_testimonial_edit', tid=t.id) }}" style="color:#38bdf8;">Edit</a></td>
+    </tr>
+    {% else %}<tr><td colspan="4" style="color:#94a3b8;">No testimonials yet</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

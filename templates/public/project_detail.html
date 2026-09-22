@@ -1,0 +1,99 @@
+{% extends 'layouts/base.html' %}
+{% block title %}{{ project.name }} — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + 4rem);">
+  <div class="container">
+    <div data-reveal>
+      <span class="eyebrow">{{ project.category.name if project.category else (project.industry or 'Project') }}</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);margin:1rem 0;">{{ project.name }}</h1>
+      <p class="text-muted" style="font-size:1.15rem;max-width:640px;">{{ project.short_description }}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1.25rem;margin-top:1.25rem;font-size:0.9rem;" class="text-muted">
+        {% if project.client %}<span><strong style="color:var(--color-text);">Client:</strong> {{ project.client }}</span>{% endif %}
+        {% if project.year %}<span><strong style="color:var(--color-text);">Year:</strong> {{ project.year }}</span>{% endif %}
+        {% if project.industry %}<span><strong style="color:var(--color-text);">Industry:</strong> {{ project.industry }}</span>{% endif %}
+      </div>
+      {% if project.live_url %}
+      <div style="margin-top:1.5rem;">
+        <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="btn btn-primary">Visit Live Website →</a>
+      </div>
+      {% endif %}
+    </div>
+    {% if project.cover_image %}
+    <div class="hero-visual" style="margin-top:2.5rem;" data-reveal>
+      <img src="{{ project.cover_image }}" alt="{{ project.name }}">
+    </div>
+    {% endif %}
+    <div class="grid grid-2" style="margin-top:3rem;gap:2.5rem;">
+      {% if project.challenge %}
+      <div data-reveal>
+        <h2 class="h2" style="font-size:1.35rem;margin-bottom:0.75rem;">Challenge</h2>
+        <p class="text-muted">{{ project.challenge }}</p>
+      </div>
+      {% endif %}
+      {% if project.solution %}
+      <div data-reveal>
+        <h2 class="h2" style="font-size:1.35rem;margin-bottom:0.75rem;">Solution</h2>
+        <p class="text-muted">{{ project.solution }}</p>
+      </div>
+      {% endif %}
+    </div>
+    {% if project.results %}
+    <div style="margin-top:2rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.35rem;margin-bottom:0.75rem;">Result</h2>
+      <p class="text-muted">{{ project.results }}</p>
+    </div>
+    {% endif %}
+    {% if project.features %}
+    <div style="margin-top:2rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.25rem;margin-bottom:1rem;">Features</h2>
+      <ul>{% for f in project.features %}<li style="padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">✓ {{ f }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if project.services_used %}
+    <div style="margin-top:1.5rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.15rem;margin-bottom:0.75rem;">Services</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+        {% for s in project.services_used %}
+        <span style="padding:0.3rem 0.75rem;border:1px solid var(--color-border);border-radius:999px;font-size:0.85rem;">{{ s }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if project.technologies %}
+    <div style="margin-top:1.5rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.15rem;margin-bottom:0.75rem;">Technologies</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+        {% for t in project.technologies %}
+        <span style="padding:0.3rem 0.75rem;border:1px solid var(--color-border);border-radius:999px;font-size:0.85rem;color:var(--color-primary);">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if project.images %}
+    <div style="margin-top:2.5rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.25rem;margin-bottom:1rem;">Screenshots</h2>
+      <div class="grid grid-2">
+        {% for img in project.images %}
+        <div class="hero-visual"><img src="{{ img.url }}" alt="{{ img.alt_text or project.name }}" loading="lazy"></div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if related %}
+    <div style="margin-top:4rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.5rem;margin-bottom:1.5rem;">Related Projects</h2>
+      <div class="grid grid-3">
+        {% for p in related %}
+        <a href="{{ url_for('project_detail', slug=p.slug) }}" class="card project-card">
+          <div class="body">
+            <div class="cat">{{ p.category.name if p.category else 'Project' }}</div>
+            <h3 class="h3">{{ p.name }}</h3>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

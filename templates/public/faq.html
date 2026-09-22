@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+{% block title %}FAQ — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container" style="max-width:760px;">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">FAQ</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">Questions</h1>
+      <p class="text-muted">Straight answers about cost, timeline, hosting and how we work.</p>
+    </div>
+    {% for f in faqs %}
+    <details class="card" style="margin-bottom:0.75rem;cursor:pointer;" data-reveal>
+      <summary style="font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+        {{ f.question }}
+        <span class="text-primary">+</span>
+      </summary>
+      <p class="text-muted" style="margin-top:1rem;line-height:1.7;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.06);">{{ f.answer }}</p>
+    </details>
+    {% endfor %}
+    <div style="text-align:center;margin-top:2.5rem;" data-reveal>
+      <p class="text-muted" style="margin-bottom:1rem;">Still have a question?</p>
+      <a href="{{ url_for('contact_page') }}" class="btn btn-primary">Contact us</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

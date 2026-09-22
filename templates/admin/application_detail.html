@@ -1,0 +1,32 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ item.full_name }}{% endblock %}
+{% block content %}
+<div class="admin-topbar"><h1>{{ item.full_name }}</h1></div>
+<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(56,189,248,0.15);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
+  <p><strong>Email:</strong> {{ item.email }}</p>
+  <p><strong>Phone:</strong> {{ item.phone or '—' }}</p>
+  <p><strong>Position:</strong> {{ item.position_title or '—' }}</p>
+  <p><strong>Type:</strong> {{ item.application_type }}</p>
+  <p><strong>Experience:</strong> {{ item.experience or '—' }}</p>
+  <p><strong>Expertise:</strong> {{ item.expertise or '—' }}</p>
+  <p><strong>Portfolio:</strong> {% if item.portfolio %}<a href="{{ item.portfolio }}" target="_blank" style="color:#38bdf8;">{{ item.portfolio }}</a>{% else %}—{% endif %}</p>
+  <p><strong>GitHub:</strong> {% if item.github %}<a href="{{ item.github }}" target="_blank" style="color:#38bdf8;">{{ item.github }}</a>{% else %}—{% endif %}</p>
+  <p><strong>LinkedIn:</strong> {% if item.linkedin %}<a href="{{ item.linkedin }}" target="_blank" style="color:#38bdf8;">{{ item.linkedin }}</a>{% else %}—{% endif %}</p>
+  <p><strong>Resume:</strong> {% if item.resume_url %}<a href="{{ item.resume_url }}" target="_blank" style="color:#38bdf8;">Download / View</a>{% else %}—{% endif %}</p>
+  <p style="margin-top:1rem;"><strong>Cover / Message:</strong></p>
+  <p style="color:#94a3b8;white-space:pre-wrap;">{{ item.cover_letter or item.message or '—' }}</p>
+  <p style="margin-top:0.75rem;font-size:0.85rem;color:#64748b;">Applied: {{ item.created_at }}</p>
+</div>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Status</label>
+  <select name="status">
+    {% for s in ['NEW','REVIEWING','SHORTLISTED','INTERVIEW','SELECTED','REJECTED'] %}
+    <option value="{{ s }}" {% if item.status==s %}selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+  <label>Internal notes</label>
+  <textarea name="notes" rows="4">{{ item.notes or '' }}</textarea>
+  <button type="submit" class="btn-admin">Update</button>
+</form>
+{% endblock %}

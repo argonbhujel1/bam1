@@ -1,0 +1,21 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Process{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Process Steps</h1>
+  <a href="{{ url_for('admin_process_new') }}" style="padding:0.6rem 1.2rem;background:#f5c542;color:#0c1929;border-radius:8px;font-weight:600;">+ Step</a>
+</div>
+<table class="admin-table">
+  <thead><tr><th>#</th><th>Title</th><th>Visible</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for s in items %}
+    <tr>
+      <td>{{ s.step_number }}</td>
+      <td>{{ s.title }}</td>
+      <td>{{ 'Yes' if s.is_visible else 'No' }}</td>
+      <td><a href="{{ url_for('admin_process_edit', sid=s.id) }}" style="color:#38bdf8;">Edit</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

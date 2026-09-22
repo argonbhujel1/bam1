@@ -1,0 +1,119 @@
+{% extends 'admin/layout.html' %}
+{% block title %}General & About{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1>General & About</h1>
+</div>
+
+<form method="post" class="admin-form" id="settings-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <h2 style="font-size:1.1rem;color:#38bdf8;margin:0 0 1rem;">Brand & logos</h2>
+  <label>Site name</label>
+  <input type="text" name="site_name" value="{{ settings.get('site_name', '') }}">
+
+  <label>Logo URL</label>
+  <div class="upload-row">
+    {% if settings.get('logo') %}
+    <img src="{{ settings.get('logo') }}" alt="Logo" class="upload-preview logo" id="logo-preview">
+    {% else %}
+    <img src="" alt="" class="upload-preview logo" id="logo-preview" style="display:none;">
+    {% endif %}
+    <div>
+      <input type="text" name="logo" id="logo-url" value="{{ settings.get('logo', '') }}" placeholder="URL or upload below">
+      <div class="file-input-wrap">
+        <input type="file" accept="image/*" data-target="logo-url" data-preview="logo-preview" class="js-upload">
+      </div>
+      <p class="hint">PNG/SVG/WebP recommended. Uploads go to Cloudinary if configured, else local static/uploads.</p>
+    </div>
+  </div>
+
+  <label>Favicon URL</label>
+  <div class="upload-row">
+    {% if settings.get('favicon') %}
+    <img src="{{ settings.get('favicon') }}" alt="Favicon" class="upload-preview" id="favicon-preview">
+    {% else %}
+    <img src="" alt="" class="upload-preview" id="favicon-preview" style="display:none;">
+    {% endif %}
+    <div>
+      <input type="text" name="favicon" id="favicon-url" value="{{ settings.get('favicon', '') }}">
+      <input type="file" accept="image/*" data-target="favicon-url" data-preview="favicon-preview" class="js-upload">
+    </div>
+  </div>
+
+  <label>Tagline</label>
+  <input type="text" name="tagline" value="{{ settings.get('tagline', '') }}">
+  <label>Description (SEO)</label>
+  <textarea name="description" rows="2">{{ settings.get('description', '') }}</textarea>
+
+  
+  <h2 style="font-size:1.1rem;color:#38bdf8;margin:1.5rem 0 1rem;">Homepage Hero</h2>
+  <label>Eyebrow</label>
+  <input type="text" name="hero_eyebrow" value="{{ settings.get('hero_eyebrow', '') }}">
+  <label>Heading</label>
+  <textarea name="hero_heading" rows="2">{{ settings.get('hero_heading', '') }}</textarea>
+  <label>Description</label>
+  <textarea name="hero_description" rows="2">{{ settings.get('hero_description', '') }}</textarea>
+  <label>Hero image (right side)</label>
+  <div class="upload-row">
+    {% if settings.get('hero_image') %}
+    <img src="{{ settings.get('hero_image') }}" class="upload-preview" id="hero-preview" style="width:120px;height:90px;object-fit:cover;">
+    {% else %}
+    <img src="" class="upload-preview" id="hero-preview" style="display:none;width:120px;height:90px;object-fit:cover;">
+    {% endif %}
+    <div style="flex:1;">
+      <input type="text" name="hero_image" id="hero-url" value="{{ settings.get('hero_image', '') }}" placeholder="Upload or paste URL">
+      <input type="file" accept="image/*" class="js-upload" data-target="hero-url" data-preview="hero-preview" data-folder="bam-studio/hero">
+      <p class="hint">Device बाट choose गर्नुहोस् — homepage दायाँ कार्डमा देखिन्छ</p>
+    </div>
+  </div>
+  <label>Primary button text</label>
+  <input type="text" name="hero_primary_text" value="{{ settings.get('hero_primary_text', '') }}">
+  <label>Primary button URL</label>
+  <input type="text" name="hero_primary_url" value="{{ settings.get('hero_primary_url', '') }}">
+  <label>Secondary button text</label>
+  <input type="text" name="hero_secondary_text" value="{{ settings.get('hero_secondary_text', '') }}">
+  <label>Secondary button URL</label>
+  <input type="text" name="hero_secondary_url" value="{{ settings.get('hero_secondary_url', '') }}">
+
+  <h2 style="font-size:1.1rem;color:#38bdf8;margin:1.5rem 0 1rem;">Contact</h2>
+  <label>Email</label>
+  <input type="text" name="email" value="{{ settings.get('email', '') }}">
+  <label>Phone</label>
+  <input type="text" name="phone" value="{{ settings.get('phone', '') }}">
+  <label>WhatsApp</label>
+  <input type="text" name="whatsapp" value="{{ settings.get('whatsapp', '') }}">
+  <label>Address</label>
+  <input type="text" name="address" value="{{ settings.get('address', '') }}">
+  <label>Google Maps URL</label>
+  <input type="text" name="google_maps_url" value="{{ settings.get('google_maps_url', '') }}">
+  <label>Business hours</label>
+  <input type="text" name="business_hours" value="{{ settings.get('business_hours', '') }}">
+  <label>Copyright text</label>
+  <input type="text" name="copyright_text" value="{{ settings.get('copyright_text', '') }}">
+
+  <h2 style="font-size:1.1rem;color:#38bdf8;margin:1.5rem 0 1rem;">About page content</h2>
+  <label>About intro</label>
+  <textarea name="about_intro" rows="3">{{ settings.get('about_intro', '') }}</textarea>
+  <label>What we do</label>
+  <textarea name="about_what_we_do" rows="3">{{ settings.get('about_what_we_do', '') }}</textarea>
+  <label>Approach</label>
+  <textarea name="about_approach" rows="3">{{ settings.get('about_approach', '') }}</textarea>
+  <label>Mission</label>
+  <textarea name="mission" rows="2">{{ settings.get('mission', '') }}</textarea>
+  <label>Vision</label>
+  <textarea name="vision" rows="2">{{ settings.get('vision', '') }}</textarea>
+
+  <h2 style="font-size:1.1rem;color:#38bdf8;margin:1.5rem 0 1rem;">Advanced</h2>
+  <label>Custom CSS</label>
+  <textarea name="custom_css" rows="3">{{ settings.get('custom_css', '') }}</textarea>
+  <label>Custom JS</label>
+  <textarea name="custom_js" rows="2">{{ settings.get('custom_js', '') }}</textarea>
+  <label>Header scripts</label>
+  <textarea name="header_scripts" rows="2">{{ settings.get('header_scripts', '') }}</textarea>
+  <label>Footer scripts</label>
+  <textarea name="footer_scripts" rows="2">{{ settings.get('footer_scripts', '') }}</textarea>
+
+  <button type="submit" class="btn-admin">Save settings</button>
+</form>
+{% endblock %}

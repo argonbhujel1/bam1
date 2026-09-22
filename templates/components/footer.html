@@ -1,0 +1,57 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="nav-brand" style="margin-bottom:1rem;">{{ site.get('site_name', 'BAM Studio') }}</div>
+        <p class="text-muted" style="max-width:280px;">{{ site.get('tagline', 'We design, build and maintain digital products for modern businesses.') }}</p>
+        {% if featured_partnership %}
+        <div class="partner-badge" style="margin-top:1.25rem;">
+          {{ featured_partnership.badge_text or 'Official Web & Tech Partner of Jhapa FC' }}
+        </div>
+        {% endif %}
+      </div>
+      <div>
+        <h3 class="h3" style="margin-bottom:1rem;font-size:0.95rem;">Quick Links</h3>
+        <ul style="display:flex;flex-direction:column;gap:0.5rem;">
+          <li><a href="{{ url_for('index') }}" class="text-muted">Home</a></li>
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">Services</a></li>
+          <li><a href="{{ url_for('work_page') }}" class="text-muted">Work</a></li>
+          <li><a href="{{ url_for('pricing_page') }}" class="text-muted">Pricing</a></li>
+          <li><a href="{{ url_for('about_page') }}" class="text-muted">About</a></li>
+          <li><a href="{{ url_for('contact_page') }}" class="text-muted">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="h3" style="margin-bottom:1rem;font-size:0.95rem;">Services</h3>
+        <ul style="display:flex;flex-direction:column;gap:0.5rem;">
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">Web Development</a></li>
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">UI/UX Design</a></li>
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">Custom Software</a></li>
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">E-commerce</a></li>
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">AI & Automation</a></li>
+          <li><a href="{{ url_for('services_page') }}" class="text-muted">Video & Graphics</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="h3" style="margin-bottom:1rem;font-size:0.95rem;">Contact</h3>
+        <ul style="display:flex;flex-direction:column;gap:0.5rem;" class="text-muted">
+          {% if site.get('email') %}<li>{{ site.get('email') }}</li>{% endif %}
+          {% if site.get('phone') %}<li>{{ site.get('phone') }}</li>{% endif %}
+          {% if site.get('whatsapp') %}<li>WhatsApp: {{ site.get('whatsapp') }}</li>{% endif %}
+          {% if site.get('address') %}<li>{{ site.get('address') }}</li>{% endif %}
+          {% if site.get('business_hours') %}<li>{{ site.get('business_hours') }}</li>{% endif %}
+        </ul>
+        {% if social_links %}
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1rem;">
+          {% for s in social_links %}
+            <a href="{{ s.url }}" target="_blank" rel="noopener" class="text-muted">{{ s.platform }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>{{ site.get('copyright_text', '© 2026 BAM Studio. Designed & Developed by BAM Studio.') }}</span>
+    </div>
+  </div>
+</footer>

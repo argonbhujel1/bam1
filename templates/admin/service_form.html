@@ -1,0 +1,46 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if service else 'New' }} Service{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">{{ 'Edit' if service else 'New' }} Service</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Title *</label>
+  <input type="text" name="title" value="{{ service.title if service else '' }}" required>
+  <label>Slug</label>
+  <input type="text" name="slug" value="{{ service.slug if service else '' }}">
+  <label>Icon (emoji)</label>
+  <input type="text" name="icon" value="{{ service.icon if service else '' }}">
+  <label>Service image</label>
+  <div class="upload-row">
+    <img src="{{ service.image if service and service.image else '' }}" class="upload-preview" id="svc-preview" {% if not service or not service.image %}style="display:none"{% endif %}>
+    <div style="flex:1;">
+      <input type="text" name="image" id="svc-image-url" value="{{ service.image if service else '' }}">
+      <input type="file" accept="image/*" class="js-upload" data-target="svc-image-url" data-preview="svc-preview" data-folder="bam-studio/services">
+    </div>
+  </div>
+  <label>Short description</label>
+  <textarea name="description" rows="2">{{ service.description if service else '' }}</textarea>
+  <label>Full description</label>
+  <textarea name="full_description" rows="5">{{ service.full_description if service else '' }}</textarea>
+  <label>Features (one per line)</label>
+  <textarea name="features" rows="5">{% if service and service.features %}{{ service.features|join('\n') }}{% endif %}</textarea>
+  <label>Technologies (comma separated)</label>
+  <input type="text" name="technologies" value="{{ service.technologies|join(', ') if service and service.technologies else '' }}">
+  <label>Deliverables (one per line)</label>
+  <textarea name="deliverables" rows="4">{% if service and service.deliverables %}{{ service.deliverables|join('\n') }}{% endif %}</textarea>
+  <label>Timeline</label>
+  <input type="text" name="timeline" value="{{ service.timeline if service else '' }}">
+  <label>Starting price</label>
+  <input type="text" name="starting_price" value="{{ service.starting_price if service else '' }}">
+  <label>Currency</label>
+  <input type="text" name="currency" value="{{ service.currency if service else 'NPR' }}">
+  <label>CTA text</label>
+  <input type="text" name="cta_text" value="{{ service.cta_text if service else 'Get a Quote' }}">
+  <label>CTA URL</label>
+  <input type="text" name="cta_url" value="{{ service.cta_url if service else '/quote' }}">
+  <label>Order</label>
+  <input type="number" name="order" value="{{ service.order if service else 0 }}">
+  <label><input type="checkbox" name="is_visible" value="1" {% if not service or service.is_visible %}checked{% endif %}> Visible</label>
+  <button type="submit" class="btn-admin">Save service</button>
+</form>
+{% endblock %}

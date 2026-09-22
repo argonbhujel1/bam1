@@ -1,0 +1,24 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Blog — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">BLOG</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">Insights</h1>
+    </div>
+    {% if posts %}
+    <div class="grid grid-3">
+      {% for post in posts %}
+      <a href="{{ url_for('blog_detail', slug=post.slug) }}" class="card" data-reveal>
+        <h3 class="h3">{{ post.title }}</h3>
+        <p class="text-muted" style="margin-top:0.5rem;font-size:0.9rem;">{{ post.excerpt }}</p>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted" style="text-align:center;">No posts published yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

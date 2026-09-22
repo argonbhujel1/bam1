@@ -1,0 +1,31 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if item else 'New' }} Partnership{% endblock %}
+{% block content %}
+<div class="admin-topbar"><h1>{{ 'Edit' if item else 'New' }} Partnership</h1></div>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Partner name *</label>
+  <input type="text" name="partner_name" value="{{ item.partner_name if item else '' }}" required>
+  <label>Badge text</label>
+  <input type="text" name="badge_text" value="{{ item.badge_text if item else 'OFFICIAL PARTNERSHIP' }}">
+  <label>Description</label>
+  <textarea name="description" rows="3">{{ item.description if item else '' }}</textarea>
+  <label>Click URL (whole banner links here)</label>
+  <input type="url" name="partner_url" value="{{ item.partner_url if item else '' }}" placeholder="https://jhapacityfc.vercel.app">
+  <p class="hint">Homepage partnership section becomes fully clickable with this URL.</p>
+  <label>Partner logo (right side)</label>
+  <div class="upload-row">
+    <img src="{{ item.partner_logo if item and item.partner_logo else '' }}" class="upload-preview" id="plogo-preview" {% if not item or not item.partner_logo %}style="display:none"{% endif %}>
+    <div style="flex:1;">
+      <input type="text" name="partner_logo" id="plogo-url" value="{{ item.partner_logo if item else '' }}">
+      <input type="file" accept="image/*" class="js-upload" data-target="plogo-url" data-preview="plogo-preview" data-folder="bam-studio/partners">
+      <p class="hint">Device बाट club logo choose गर्नुहोस्</p>
+    </div>
+  </div>
+  <label>Order</label>
+  <input type="number" name="order" value="{{ item.order if item else 0 }}">
+  <label><input type="checkbox" name="is_featured" value="1" {% if item and item.is_featured %}checked{% endif %}> Featured on homepage</label>
+  <label><input type="checkbox" name="is_visible" value="1" {% if not item or item.is_visible %}checked{% endif %}> Visible</label>
+  <button type="submit" class="btn-admin">Save</button>
+</form>
+{% endblock %}

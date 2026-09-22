@@ -1,0 +1,114 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Careers — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="hero" style="min-height:auto;padding-block:6rem 4rem;">
+  <div class="container" style="max-width:720px;text-align:center;" data-reveal>
+    <span class="eyebrow">CAREERS</span>
+    <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);margin:1rem 0;">Build the Future With BAM Studio</h1>
+    <p class="text-muted" style="font-size:1.1rem;margin-bottom:2rem;">
+      Join a growing digital studio where developers, designers, creators and problem-solvers work together to build meaningful digital products.
+    </p>
+    <div class="btn-group" style="justify-content:center;">
+      <a href="#open-positions" class="btn btn-primary">View Open Positions</a>
+      <a href="{{ url_for('career_general_apply') }}" class="btn btn-secondary">Send Your Resume</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">WHY BAM</span>
+      <h2 class="h2">Why Work With BAM Studio?</h2>
+    </div>
+    <div class="grid grid-4">
+      {% for icon, title in [
+        ('🚀','Real-world projects'),('💻','Modern technologies'),('🎨','Creative freedom'),('📚','Learning & growth'),
+        ('🤝','Collaborative team'),('🌍','Remote / flexible'),('🧩','Diverse projects'),('📈','Career growth')
+      ] %}
+      <div class="card hover-lift text-center" data-reveal>
+        <div style="font-size:1.75rem;margin-bottom:0.5rem;">{{ icon }}</div>
+        <h3 class="h3" style="font-size:1rem;">{{ title }}</h3>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--color-bg-deep);" id="open-positions">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">HIRING</span>
+      <h2 class="h2">Open Positions</h2>
+    </div>
+    <div class="grid grid-2">
+      {% for job in jobs %}
+      <div class="card hover-lift" data-reveal>
+        <h3 class="h3">{{ job.title }}</h3>
+        <p class="text-muted" style="font-size:0.9rem;margin:0.5rem 0;">
+          {{ job.employment_type or '' }}{% if job.work_mode %} · {{ job.work_mode }}{% endif %}
+        </p>
+        <p class="text-muted" style="font-size:0.9rem;">
+          {% if job.location %}Location: {{ job.location }}{% endif %}
+          {% if job.experience %}<br>Experience: {{ job.experience }}{% endif %}
+        </p>
+        <a href="{{ url_for('career_detail', slug=job.slug) }}" class="btn btn-primary" style="margin-top:1rem;">View Position</a>
+      </div>
+      {% else %}
+      <p class="text-muted">No open positions right now. You can still send a general application.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if internships %}
+<section class="section" id="internships">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">LEARN</span>
+      <h2 class="h2">Internship / Trainee</h2>
+      <p class="text-muted">Hands-on learning with real projects and a certificate path.</p>
+    </div>
+    <div class="grid grid-2">
+      {% for job in internships %}
+      <div class="card hover-lift" data-reveal>
+        <h3 class="h3">{{ job.title }}</h3>
+        {% if job.duration %}<p class="text-primary" style="font-size:0.85rem;">Duration: {{ job.duration }}</p>{% endif %}
+        <p class="text-muted" style="margin:0.5rem 0;">{{ job.overview or job.about_role or '' }}</p>
+        <a href="{{ url_for('career_detail', slug=job.slug) }}" class="btn btn-primary" style="margin-top:0.75rem;">View & Apply</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if freelancers %}
+<section class="section" style="background:var(--color-bg-deep);" id="freelance">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">NETWORK</span>
+      <h2 class="h2">Freelance / Contract</h2>
+      <p class="text-muted">Join our freelancer network for project-based work.</p>
+    </div>
+    <div class="grid grid-3">
+      {% for job in freelancers %}
+      <div class="card hover-lift" data-reveal>
+        <h3 class="h3">{{ job.title }}</h3>
+        <p class="text-muted" style="font-size:0.9rem;">{{ job.overview or '' }}</p>
+        <a href="{{ url_for('career_detail', slug=job.slug) }}" class="text-primary" style="font-weight:600;font-size:0.9rem;">Join →</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="container" style="max-width:640px;text-align:center;" data-reveal>
+    <h2 class="h2">Don't see a position that fits?</h2>
+    <p class="text-muted" style="margin:1rem 0 1.5rem;">We're always interested in meeting talented people.</p>
+    <a href="{{ url_for('career_general_apply') }}" class="btn btn-solid">Send General Application</a>
+  </div>
+</section>
+{% endblock %}

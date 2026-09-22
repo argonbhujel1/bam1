@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} — BAM Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <div class="logo">BAM STUDIO</div>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">Dashboard</a>
+      <div class="group-title">Website</div>
+      <a href="{{ url_for('admin_theme') }}" class="{% if request.endpoint == 'admin_theme' %}active{% endif %}">Theme</a>
+      <a href="{{ url_for('admin_navigation') }}" class="{% if request.endpoint == 'admin_navigation' %}active{% endif %}">Navigation</a>
+      <a href="{{ url_for('admin_settings') }}" class="{% if request.endpoint == 'admin_settings' %}active{% endif %}">General & About</a>
+      <div class="group-title">Content</div>
+      <a href="{{ url_for('admin_projects') }}" class="{% if 'project' in (request.endpoint or '') %}active{% endif %}">Projects / Work</a>
+      <a href="{{ url_for('admin_services') }}" class="{% if 'service' in (request.endpoint or '') %}active{% endif %}">Services</a>
+      <a href="{{ url_for('admin_solutions') }}" class="{% if 'solution' in (request.endpoint or '') %}active{% endif %}">Solutions</a>
+      <a href="{{ url_for('admin_pricing') }}" class="{% if 'pricing' in (request.endpoint or '') %}active{% endif %}">Pricing</a>
+      <a href="{{ url_for('admin_team') }}" class="{% if 'team' in (request.endpoint or '') %}active{% endif %}">Team</a>
+      <a href="{{ url_for('admin_process') }}" class="{% if 'process' in (request.endpoint or '') %}active{% endif %}">Process</a>
+      <a href="{{ url_for('admin_faqs') }}" class="{% if 'faq' in (request.endpoint or '') %}active{% endif %}">FAQ</a>
+      <a href="{{ url_for('admin_testimonials') }}" class="{% if 'testimonial' in (request.endpoint or '') %}active{% endif %}">Testimonials</a>
+      <a href="{{ url_for('admin_stats') }}" class="{% if request.endpoint == 'admin_stats' %}active{% endif %}">Stats & Values</a>
+      <a href="{{ url_for('admin_partnerships') }}" class="{% if 'partnership' in (request.endpoint or '') %}active{% endif %}">Partnerships</a>
+      <a href="{{ url_for('admin_media') }}" class="{% if request.endpoint == 'admin_media' %}active{% endif %}">Media</a>
+      <div class="group-title">Leads</div>
+      <div class="group-title">Careers</div>
+      <a href="{{ url_for('admin_jobs') }}">Job Positions</a>
+      <a href="{{ url_for('admin_applications') }}">Applications</a>
+      <div class="group-title">Leads</div>
+      <a href="{{ url_for('admin_leads') }}" class="{% if 'lead' in (request.endpoint or '') %}active{% endif %}">All Leads</a>
+      <div class="group-title">Account</div>
+      <a href="{{ url_for('index') }}" target="_blank">View site ↗</a>
+      <a href="{{ url_for('admin_logout') }}">Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="flash {{ cat }}" role="alert">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

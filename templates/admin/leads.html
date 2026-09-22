@@ -1,0 +1,27 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Leads{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Leads</h1>
+  <div>
+    <a href="{{ url_for('admin_leads') }}" style="color:#94a3b8;margin-right:0.75rem;">All</a>
+    <a href="{{ url_for('admin_leads', status='NEW') }}" style="color:#38bdf8;">New</a>
+  </div>
+</div>
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Email</th><th>Service</th><th>Status</th><th>Date</th></tr></thead>
+  <tbody>
+    {% for l in leads %}
+    <tr>
+      <td><a href="{{ url_for('admin_lead_detail', lid=l.id) }}" style="color:#38bdf8;">{{ l.name }}</a></td>
+      <td>{{ l.email }}</td>
+      <td>{{ l.service or '—' }}</td>
+      <td><span class="badge badge-new">{{ l.status }}</span></td>
+      <td>{{ l.created_at.strftime('%d %b %Y') if l.created_at else '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" style="color:#94a3b8;">No leads</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

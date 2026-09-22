@@ -1,0 +1,22 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if item else 'New' }} Solution{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">{{ 'Edit' if item else 'New' }} Solution</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Title *</label><input type="text" name="title" value="{{ item.title if item else '' }}" required>
+  <label>Slug</label><input type="text" name="slug" value="{{ item.slug if item else '' }}">
+  <label>Industry</label><input type="text" name="industry" value="{{ item.industry if item else '' }}">
+  <label>Icon</label><input type="text" name="icon" value="{{ item.icon if item else '' }}">
+  <label>Short description</label><textarea name="short_description" rows="2">{{ item.short_description if item else '' }}</textarea>
+  <label>Problem</label><textarea name="problem" rows="3">{{ item.problem if item else '' }}</textarea>
+  <label>Solution</label><textarea name="solution_text" rows="3">{{ item.solution_text if item else '' }}</textarea>
+  <label>Features (one per line)</label><textarea name="features" rows="4">{% if item and item.features %}{{ item.features|join('\n') }}{% endif %}</textarea>
+  <label>Technologies (comma separated)</label><input type="text" name="technologies" value="{{ item.technologies|join(', ') if item and item.technologies else '' }}">
+  <label>CTA text</label><input type="text" name="cta_text" value="{{ item.cta_text if item else 'Discuss this solution' }}">
+  <label>CTA URL</label><input type="text" name="cta_url" value="{{ item.cta_url if item else '/quote' }}">
+  <label>Order</label><input type="number" name="order" value="{{ item.order if item else 0 }}">
+  <label><input type="checkbox" name="is_visible" value="1" {% if not item or item.is_visible %}checked{% endif %}> Visible</label>
+  <button type="submit" style="margin-top:1rem;padding:0.75rem 1.5rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;">Save</button>
+</form>
+{% endblock %}

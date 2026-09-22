@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site.get('site_name', 'BAM Studio') }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ site.get('description', 'Modern websites, custom software and digital experiences.') }}{% endblock %}">
+  <link rel="icon" href="{{ site.get('favicon', '/static/images/favicon.ico') }}">
+  <style>{{ css_vars|safe }}</style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% if site.get('custom_css') %}<style>{{ site.get('custom_css')|safe }}</style>{% endif %}
+  {% if site.get('header_scripts') %}{{ site.get('header_scripts')|safe }}{% endif %}
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% include 'components/navbar.html' %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  {% include 'components/footer.html' %}
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% if site.get('custom_js') %}<script>{{ site.get('custom_js')|safe }}</script>{% endif %}
+  {% if site.get('footer_scripts') %}{{ site.get('footer_scripts')|safe }}{% endif %}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

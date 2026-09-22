@@ -1,0 +1,64 @@
+{% extends 'layouts/base.html' %}
+{% block title %}{{ job.title }} — Careers — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + 4rem);">
+  <div class="container" style="max-width:800px;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash {{ cat }}" style="padding:0.85rem 1.25rem;border-radius:8px;margin-bottom:1rem;{% if cat=='success' %}background:rgba(5,150,105,0.12);color:#059669;{% else %}background:rgba(220,38,38,0.1);color:#dc2626;{% endif %}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+    <div data-reveal>
+      <span class="eyebrow">{{ job.department or (job.employment_type or 'POSITION') }}</span>
+      <h1 class="h1" style="font-size:clamp(1.75rem,4vw,2.5rem);margin:1rem 0;">{{ job.title }}</h1>
+      <div class="text-muted" style="font-size:0.95rem;display:flex;flex-wrap:wrap;gap:1rem;">
+        {% if job.employment_type %}<span>{{ job.employment_type }}</span>{% endif %}
+        {% if job.work_mode %}<span>{{ job.work_mode }}</span>{% endif %}
+        {% if job.location %}<span>{{ job.location }}</span>{% endif %}
+        {% if job.experience %}<span>Exp: {{ job.experience }}</span>{% endif %}
+        {% if job.salary %}<span>{{ job.salary }}</span>{% endif %}
+        {% if job.deadline %}<span>Deadline: {{ job.deadline }}</span>{% endif %}
+        {% if job.duration %}<span>Duration: {{ job.duration }}</span>{% endif %}
+      </div>
+    </div>
+    {% if job.about_role or job.overview %}
+    <div style="margin-top:2rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.25rem;margin-bottom:0.75rem;">About the Role</h2>
+      <p class="text-muted" style="line-height:1.8;">{{ job.about_role or job.overview }}</p>
+    </div>
+    {% endif %}
+    {% if job.responsibilities %}
+    <div style="margin-top:1.75rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">Responsibilities</h2>
+      <ul>{% for r in job.responsibilities %}<li style="padding:0.4rem 0;border-bottom:1px solid var(--color-border);">✓ {{ r }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if job.requirements %}
+    <div style="margin-top:1.75rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">Requirements</h2>
+      <ul>{% for r in job.requirements %}<li style="padding:0.4rem 0;border-bottom:1px solid var(--color-border);">✓ {{ r }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if job.nice_to_have %}
+    <div style="margin-top:1.75rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">Nice to Have</h2>
+      <ul>{% for r in job.nice_to_have %}<li style="padding:0.4rem 0;border-bottom:1px solid var(--color-border);">✓ {{ r }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if job.what_we_offer %}
+    <div style="margin-top:1.75rem;" data-reveal>
+      <h2 class="h2" style="font-size:1.2rem;margin-bottom:0.75rem;">What We Offer</h2>
+      <ul>{% for r in job.what_we_offer %}<li style="padding:0.4rem 0;border-bottom:1px solid var(--color-border);">✓ {{ r }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    <div style="margin-top:2.5rem;" data-reveal>
+      {% if not job.is_closed %}
+      <a href="{{ url_for('career_apply', slug=job.slug) }}" class="btn btn-solid">Apply for this Position →</a>
+      {% else %}
+      <p class="text-muted">This position is closed.</p>
+      {% endif %}
+      <a href="{{ url_for('careers_page') }}" class="btn btn-primary" style="margin-left:0.5rem;">All careers</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

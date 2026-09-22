@@ -1,0 +1,54 @@
+<header class="navbar" role="banner">
+  <div class="container">
+    <a href="{{ url_for('index') }}" class="nav-brand">
+      {% if site.get('logo') %}
+        <img src="{{ site.get('logo') }}" alt="{{ site.get('site_name', 'BAM Studio') }}">
+      {% else %}
+        BAM STUDIO
+      {% endif %}
+    </a>
+    <nav class="nav-links" role="navigation" aria-label="Main">
+      {% for item in nav_items %}
+        {% set kids = nav_children.get(item.id, []) if nav_children is defined else [] %}
+        {% if item.is_cta %}
+          <a href="{{ item.url }}" class="nav-cta" {% if item.is_external %}target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
+        {% elif kids %}
+          <div class="nav-dropdown">
+            <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+              {{ item.label }} <span class="caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="nav-dropdown-menu" role="menu">
+              {% for child in kids %}
+              <a href="{{ child.url }}" role="menuitem" {% if child.is_external %}target="_blank" rel="noopener"{% endif %}>{{ child.label }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ item.url }}" {% if item.is_external %}target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
+        {% endif %}
+      {% else %}
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('services_page') }}">Services</a>
+        <a href="{{ url_for('work_page') }}">Work</a>
+        <a href="{{ url_for('services_page') }}">Solutions</a>
+        <a href="{{ url_for('pricing_page') }}">Pricing</a>
+        <a href="{{ url_for('about_page') }}">About</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">More <span class="caret">▾</span></button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="{{ url_for('about_page') }}#team" role="menuitem">Our Team</a>
+            <a href="{{ url_for('about_page') }}#process" role="menuitem">Process</a>
+            <a href="{{ url_for('index') }}#testimonials" role="menuitem">Testimonials</a>
+            <a href="{{ url_for('about_page') }}#faq" role="menuitem">FAQ</a>
+            <a href="{{ url_for('blog_page') }}" role="menuitem">Insights</a>
+            <a href="{{ url_for('careers_page') }}" role="menuitem">Careers</a>
+          </div>
+        </div>
+        <a href="{{ url_for('contact_page') }}" class="nav-cta">Get a Quote</a>
+      {% endfor %}
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

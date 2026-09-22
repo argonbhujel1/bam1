@@ -1,0 +1,22 @@
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--animation-speed, 0.6s) ease, transform var(--animation-speed, 0.6s) ease;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal="left"] { transform: translateX(-28px); }
+[data-reveal="right"] { transform: translateX(28px); }
+[data-reveal="scale"] { transform: scale(0.92); }
+.fade-in { animation: fadeIn var(--animation-speed, 0.6s) ease forwards; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(245,197,66,0.2); }
+  50% { box-shadow: 0 0 36px rgba(245,197,66,0.45); }
+}
+.glow-pulse { animation: pulse-glow 3s ease-in-out infinite; }

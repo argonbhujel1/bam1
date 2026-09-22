@@ -1,0 +1,26 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Lead — {{ lead.name }}{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">{{ lead.name }}</h1>
+<div style="background:rgba(255,255,255,0.04);padding:1.5rem;border-radius:12px;margin-bottom:1.5rem;">
+  <p><strong>Email:</strong> {{ lead.email }}</p>
+  <p><strong>Phone:</strong> {{ lead.phone or '—' }}</p>
+  <p><strong>Company:</strong> {{ lead.company or '—' }}</p>
+  <p><strong>Service:</strong> {{ lead.service or '—' }}</p>
+  <p><strong>Budget:</strong> {{ lead.budget or '—' }}</p>
+  <p style="margin-top:1rem;"><strong>Message:</strong></p>
+  <p style="color:#94a3b8;">{{ lead.message or '—' }}</p>
+</div>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Status</label>
+  <select name="status">
+    {% for s in ['NEW','CONTACTED','DISCUSSION','QUOTED','WON','LOST'] %}
+    <option value="{{ s }}" {% if lead.status == s %}selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+  <label>Notes</label>
+  <textarea name="notes" rows="4">{{ lead.notes or '' }}</textarea>
+  <button type="submit" style="padding:0.75rem 1.5rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;">Update</button>
+</form>
+{% endblock %}

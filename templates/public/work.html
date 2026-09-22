@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Work — {{ site.get('site_name', 'BAM Studio') }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:calc(72px + var(--section-space-desktop));">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="eyebrow">PORTFOLIO</span>
+      <h1 class="h1" style="font-size:clamp(2rem,5vw,3rem);">Selected Work</h1>
+      <p class="text-muted">Real websites and digital experiences built by BAM Studio.</p>
+    </div>
+    <div class="grid grid-3">
+      {% for project in projects %}
+      <a href="{{ url_for('project_detail', slug=project.slug) }}" class="card project-card" data-reveal>
+        <div class="thumb">
+          {% if project.cover_image %}
+            <img src="{{ project.cover_image }}" alt="{{ project.name }}" loading="lazy">
+          {% else %}
+            <div style="width:100%;height:100%;min-height:180px;background:linear-gradient(135deg,#132337,#0c1929);display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:var(--font-display);font-weight:700;color:var(--color-primary);">{{ project.name[:2]|upper }}</span>
+            </div>
+          {% endif %}
+        </div>
+        <div class="body">
+          <div class="cat">{{ project.category.name if project.category else 'Project' }}</div>
+          <h3 class="h3">{{ project.name }}</h3>
+          <p class="text-muted" style="font-size:0.9rem;margin-top:0.4rem;">{{ project.short_description[:140] if project.short_description else '' }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

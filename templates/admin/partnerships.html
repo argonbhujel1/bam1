@@ -1,0 +1,21 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Partnerships{% endblock %}
+{% block content %}
+<div class="admin-topbar">
+  <h1 style="font-size:1.5rem;">Partnerships</h1>
+  <a href="{{ url_for('admin_partnership_new') }}" style="padding:0.6rem 1.2rem;background:#f5c542;color:#0c1929;border-radius:8px;font-weight:600;">+ Add</a>
+</div>
+<table class="admin-table">
+  <thead><tr><th>Partner</th><th>Badge</th><th>Featured</th><th></th></tr></thead>
+  <tbody>
+    {% for i in items %}
+    <tr>
+      <td>{{ i.partner_name }}</td>
+      <td>{{ i.badge_text }}</td>
+      <td>{{ 'Yes' if i.is_featured else '' }}</td>
+      <td><a href="{{ url_for('admin_partnership_edit', pid=i.id) }}" style="color:#38bdf8;">Edit</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

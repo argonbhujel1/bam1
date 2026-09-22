@@ -1,0 +1,5 @@
+/* Additional mobile polish */
+@media (max-width: 480px) {
+  .btn { padding: 0.75rem 1.25rem; font-size: 0.8rem; }
+  .hero { min-height: auto; padding-block: 4rem 3rem; }
+}

@@ -1,0 +1,53 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Stats & Values{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1rem;">Stats</h1>
+<form method="post" action="{{ url_for('admin_stat_add') }}" class="admin-form" style="margin-bottom:2rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:end;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div><label>Value</label><input type="text" name="value" placeholder="20+" required></div>
+  <div><label>Label</label><input type="text" name="label" placeholder="Projects" required></div>
+  <div><label>Order</label><input type="number" name="order" value="0"></div>
+  <button type="submit" style="padding:0.7rem 1.2rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;">Add stat</button>
+</form>
+<table class="admin-table" style="margin-bottom:2.5rem;">
+  <thead><tr><th>Value</th><th>Label</th><th>Order</th><th></th></tr></thead>
+  <tbody>
+    {% for s in stats %}
+    <tr>
+      <td>{{ s.value }}</td><td>{{ s.label }}</td><td>{{ s.order }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_stat_delete', sid=s.id) }}" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" style="color:#ff4d6d;background:none;border:none;cursor:pointer;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h1 style="font-size:1.5rem;margin-bottom:1rem;">Values</h1>
+<form method="post" action="{{ url_for('admin_value_add') }}" class="admin-form" style="margin-bottom:2rem;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Title</label><input type="text" name="title" required>
+  <label>Description</label><textarea name="description" rows="2"></textarea>
+  <label>Order</label><input type="number" name="order" value="0">
+  <button type="submit" style="padding:0.7rem 1.2rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;">Add value</button>
+</form>
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Description</th><th></th></tr></thead>
+  <tbody>
+    {% for v in values %}
+    <tr>
+      <td>{{ v.title }}</td><td>{{ v.description[:60] if v.description else '' }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_value_delete', vid=v.id) }}" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" style="color:#ff4d6d;background:none;border:none;cursor:pointer;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if item else 'New' }} Position{% endblock %}
+{% block content %}
+<div class="admin-topbar"><h1>{{ 'Edit' if item else 'New' }} Position</h1></div>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Title *</label><input type="text" name="title" value="{{ item.title if item else '' }}" required>
+  <label>Slug</label><input type="text" name="slug" value="{{ item.slug if item else '' }}">
+  <label>Department</label><input type="text" name="department" value="{{ item.department if item else '' }}">
+  <label>Employment type</label>
+  <select name="employment_type">
+    {% for t in ['Full-time','Part-time','Contract','Internship','Freelance'] %}
+    <option value="{{ t }}" {% if item and item.employment_type==t %}selected{% endif %}>{{ t }}</option>
+    {% endfor %}
+  </select>
+  <label>Work mode</label>
+  <select name="work_mode">
+    {% for t in ['Remote','On-site','Hybrid','Remote / On-site'] %}
+    <option value="{{ t }}" {% if item and item.work_mode==t %}selected{% endif %}>{{ t }}</option>
+    {% endfor %}
+  </select>
+  <label>Location</label><input type="text" name="location" value="{{ item.location if item else 'Nepal' }}">
+  <label>Experience</label><input type="text" name="experience" value="{{ item.experience if item else '' }}" placeholder="0–2 Years">
+  <label>Salary / Compensation</label><input type="text" name="salary" value="{{ item.salary if item else '' }}">
+  <label>Deadline</label><input type="text" name="deadline" value="{{ item.deadline if item else '' }}">
+  <label>Duration (internship)</label><input type="text" name="duration" value="{{ item.duration if item else '' }}">
+  <label>Overview</label><textarea name="overview" rows="2">{{ item.overview if item else '' }}</textarea>
+  <label>About the role</label><textarea name="about_role" rows="4">{{ item.about_role if item else '' }}</textarea>
+  <label>Responsibilities (one per line)</label><textarea name="responsibilities" rows="5">{% if item and item.responsibilities %}{{ item.responsibilities|join('\n') }}{% endif %}</textarea>
+  <label>Requirements (one per line)</label><textarea name="requirements" rows="5">{% if item and item.requirements %}{{ item.requirements|join('\n') }}{% endif %}</textarea>
+  <label>Nice to have (one per line)</label><textarea name="nice_to_have" rows="4">{% if item and item.nice_to_have %}{{ item.nice_to_have|join('\n') }}{% endif %}</textarea>
+  <label>What we offer (one per line)</label><textarea name="what_we_offer" rows="4">{% if item and item.what_we_offer %}{{ item.what_we_offer|join('\n') }}{% endif %}</textarea>
+  <label>Order</label><input type="number" name="order" value="{{ item.order if item else 0 }}">
+  <label><input type="checkbox" name="is_internship" value="1" {% if item and item.is_internship %}checked{% endif %}> Internship / Trainee</label>
+  <label><input type="checkbox" name="is_freelance" value="1" {% if item and item.is_freelance %}checked{% endif %}> Freelance / Contract</label>
+  <label><input type="checkbox" name="is_published" value="1" {% if not item or item.is_published %}checked{% endif %}> Published</label>
+  <label><input type="checkbox" name="is_closed" value="1" {% if item and item.is_closed %}checked{% endif %}> Closed</label>
+  <button type="submit" class="btn-admin">Save Position</button>
+</form>
+{% endblock %}

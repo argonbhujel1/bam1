@@ -1,0 +1,20 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Edit' if plan else 'New' }} Plan{% endblock %}
+{% block content %}
+<h1 style="font-size:1.5rem;margin-bottom:1.5rem;">{{ 'Edit' if plan else 'New' }} Pricing Plan</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Name</label><input type="text" name="name" value="{{ plan.name if plan else '' }}" required>
+  <label>Price</label><input type="text" name="price" value="{{ plan.price if plan else '' }}">
+  <label>Currency</label><input type="text" name="currency" value="{{ plan.currency if plan else 'NPR' }}">
+  <label>Description</label><textarea name="description" rows="2">{{ plan.description if plan else '' }}</textarea>
+  <label>Features (one per line)</label><textarea name="features" rows="5">{% if plan and plan.features %}{{ plan.features|join('\n') }}{% endif %}</textarea>
+  <label>Button Text</label><input type="text" name="button_text" value="{{ plan.button_text if plan else 'Get Started' }}">
+  <label>Button URL</label><input type="text" name="button_url" value="{{ plan.button_url if plan else '/contact' }}">
+  <label>Badge</label><input type="text" name="badge" value="{{ plan.badge if plan else '' }}">
+  <label>Order</label><input type="number" name="order" value="{{ plan.order if plan else 0 }}">
+  <label><input type="checkbox" name="is_featured" value="1" {% if plan and plan.is_featured %}checked{% endif %}> Featured</label>
+  <label><input type="checkbox" name="is_visible" value="1" {% if not plan or plan.is_visible %}checked{% endif %}> Visible</label>
+  <button type="submit" style="margin-top:1rem;padding:0.75rem 1.5rem;background:#f5c542;color:#0c1929;border:none;border-radius:8px;font-weight:600;">Save</button>
+</form>
+{% endblock %}
